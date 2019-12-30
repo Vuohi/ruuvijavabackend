@@ -8,6 +8,7 @@ package javabackend;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -26,16 +27,17 @@ public class Controller {
     
     
        
-    @GetMapping("/measurements")
+    @GetMapping("/measurements/{user}")
     @ResponseBody
-    public Iterable<Measurement> getMeasurements(@RequestParam String user) {
-        return this.measurementService.getByUserAndTimestamp(user, "1577653208", "1577654708");
+    public Iterable<Measurement> getMeasurements(@PathVariable String user) {
+        return this.measurementService.getByUserAndTimestamp(user, "1577689807", "1577693108");
         
     }
     
-    @PostMapping("/measurements")
-    public Iterable<Measurement> getTimePeriod(@RequestParam DateTime beginning, @RequestParam DateTime end) {
+    @PostMapping("/measurements/{user}")
+    public Iterable<Measurement> getTimePeriod(@PathVariable String user, @RequestParam DateTime beginning, @RequestParam DateTime end) {
         
+        return this.measurementService.getByUserAndTimestamp(user, beginning.toString(), end.toString());
     }
    
 //    @GetMapping("/measurements/{id}")

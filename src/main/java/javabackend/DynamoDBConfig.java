@@ -27,10 +27,9 @@ import org.springframework.context.annotation.Primary;
 @Configuration
 public class DynamoDBConfig {
     
-    @Value("AKIATWTESDSL5LJ6XE3W")
+    @Value("${amazon.dynamodb.accesskey}")
     private String amazonDynamoDBAccessKey;
-
-    @Value("+PkhdGh3edGqiJeEJfFvHfCIlM5bLCDGwp54YJ5D")
+    @Value("${amazon.dynamodb.secretkey}")
     private String amazonDynamoDBSecretKey;
 
     public AWSCredentialsProvider amazonAWSCredentialsProvider() {
