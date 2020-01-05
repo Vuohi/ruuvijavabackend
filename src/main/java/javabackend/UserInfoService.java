@@ -9,7 +9,6 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,51 +20,35 @@ import org.springframework.stereotype.Service;
  * @author katri
  */
 @Service
-public class MeasurementService {
+public class UserInfoService {
     
     @Autowired
     private DynamoDBConfig config;
-    
     
     private DynamoDBMapper getMapper() {
         AmazonDynamoDB client = this.config.amazonDynamoDB();
         return this.config.dynamoDBMapper(client, this.config.dynamoDBMapperConfig());
     }
     
-    public List<Measurement> getByUserAndTimestamp(String user, String beginning, String end) {
-        beginning += user.substring(0, 2);
-        beginning += "0";
-        
-        end += user.substring(0, 2);
-        end += "9";
-        
+    public UserInfo getByUser(String user) {
         DynamoDBMapper mapper = this.getMapper();
         
         Map<String, AttributeValue> eav = new HashMap<>();
         eav.put(":val1", new AttributeValue().withS(user));
-        eav.put(":val2", new AttributeValue().withS(beginning));
-        eav.put(":val3", new AttributeValue().withS(end));
+        eav.put(":val2", new AttributeValue().withS("userdata"));
         
-        DynamoDBQueryExpression<Measurement> queryExpression = new DynamoDBQueryExpression<Measurement>()
-                .withKeyConditionExpression("Person = :val1 and Timestamp_Tagname between :val2 and :val3")
+        DynamoDBQueryExpression<UserInfo> queryExpression = new DynamoDBQueryExpression<UserInfo>()
+                .withKeyConditionExpression("Person = :val1 and Timestamp_Tagname = :val2")
                 .withExpressionAttributeValues(eav);
         
-        List<Measurement> response = mapper.query(Measurement.class, queryExpression);
+        List<UserInfo> response = mapper.query(UserInfo.class, queryExpression);
         
-        return response;
-        
+        return response.get(0);
     }
     
-    public Map<String, List<Measurement>> arrangeByTag(List<Measurement> measurements) {
-        Map<String, List<Measurement>> arranged = new HashMap<>();
-        for (Measurement measurement : measurements) {
-            String tagname = measurement.getTimestamp_tag().substring(11);
-            arranged.putIfAbsent(tagname, new ArrayList<>());
-            arranged.get(tagname).add(measurement);           
-        }
-       return arranged; 
+    public void save(UserInfo userinfo) {
+        DynamoDBMapper mapper = this.getMapper();
+        mapper.save(userinfo);
     }
-    
-
     
 }

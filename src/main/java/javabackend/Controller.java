@@ -5,6 +5,8 @@
  */
 package javabackend;
 
+import java.util.List;
+import java.util.Map;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,8 +31,8 @@ public class Controller {
        
     @GetMapping("/measurements/{user}")
     @ResponseBody
-    public Iterable<Measurement> getMeasurements(@PathVariable String user) {
-        return this.measurementService.getByUserAndTimestamp(user, "1577689807", "1577693108");
+    public Map<String, List<Measurement>> getMeasurements(@PathVariable String user) {
+        return this.measurementService.arrangeByTag(this.measurementService.getByUserAndTimestamp(user, "1577689807", "1577693108"));
         
     }
     
@@ -46,10 +48,10 @@ public class Controller {
 //        
 //    }
 //    
-    @GetMapping("/last")
-    public Measurement getLatestMeasurement() {
-        
-    }
+//    @GetMapping("/last")
+//    public Measurement getLatestMeasurement() {
+//        
+//    }
 //    
 //    
 //    @PostMapping("/queryData")

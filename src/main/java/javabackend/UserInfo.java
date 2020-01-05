@@ -7,8 +7,8 @@ package javabackend;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
-import java.util.List;
 import lombok.Data;
 
 /**
@@ -16,16 +16,16 @@ import lombok.Data;
  * @author katri
  */
 @Data
-@DynamoDBTable(tableName = "java-spring-test")
+@DynamoDBTable(tableName = "RuuviMeasurements")
 public class UserInfo {
     
-    @DynamoDBHashKey
-    private String owner;
+    @DynamoDBHashKey(attributeName="Person")
+    private String user;
     
-    @DynamoDBAttribute
-    private Integer ranking;
+    @DynamoDBRangeKey(attributeName="Timestamp_Tagname")
+    private String infoTag;
     
-    @DynamoDBAttribute
-    private List<String> data;
+    @DynamoDBAttribute(attributeName="Data")
+    private String password;
     
 }
