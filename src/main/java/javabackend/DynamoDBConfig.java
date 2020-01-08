@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.Profile;
 
 
 /**
@@ -37,6 +38,15 @@ public class DynamoDBConfig {
     }
 
     @Bean
+    @Profile("production")
+    public AWSCredentials amazonAWSCredentials() {
+        amazonDynamoDBAccessKey = System.getenv("S3_KEY");
+        amazonDynamoDBSecretKey = System.getenv("S3_SECRET");
+        return new BasicAWSCredentials(amazonDynamoDBAccessKey, amazonDynamoDBSecretKey);
+    }
+    
+    @Bean
+    @Profile("development")
     public AWSCredentials amazonAWSCredentials() {
         return new BasicAWSCredentials(amazonDynamoDBAccessKey, amazonDynamoDBSecretKey);
     }
@@ -58,4 +68,7 @@ public class DynamoDBConfig {
         return AmazonDynamoDBClientBuilder.standard().withCredentials(amazonAWSCredentialsProvider())
                 .withRegion(Regions.EU_NORTH_1).build();
     }
+    
+    
 }
+
