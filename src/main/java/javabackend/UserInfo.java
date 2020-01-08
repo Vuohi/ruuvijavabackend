@@ -20,7 +20,7 @@ import lombok.Data;
 public class UserInfo {
     
     @DynamoDBHashKey(attributeName="Person")
-    private String user;
+    private String username;
     
     @DynamoDBRangeKey(attributeName="Timestamp_Tagname")
     private String infoTag;

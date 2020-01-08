@@ -5,6 +5,7 @@
  */
 package javabackend;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Map;
 import org.joda.time.DateTime;
@@ -31,14 +32,15 @@ public class Controller {
        
     @GetMapping("/measurements/{user}")
     @ResponseBody
-    public Map<String, List<Measurement>> getMeasurements(@PathVariable String user) {
-        return this.measurementService.arrangeByTag(this.measurementService.getByUserAndTimestamp(user, "1577689807", "1577693108"));
+    public List<List<Measurement>> getMeasurements(@PathVariable String user) {
+        String end = String.valueOf(Instant.now().getEpochSecond());
+        String beginning = String.valueOf(Instant.now().getEpochSecond() - 86400);
+        return this.measurementService.arrangeByTag(this.measurementService.getByUserAndTimestamp(user, beginning, end));
         
     }
     
     @PostMapping("/measurements/{user}")
     public Iterable<Measurement> getTimePeriod(@PathVariable String user, @RequestParam DateTime beginning, @RequestParam DateTime end) {
-        
         return this.measurementService.getByUserAndTimestamp(user, beginning.toString(), end.toString());
     }
    

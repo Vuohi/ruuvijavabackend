@@ -56,12 +56,16 @@ public class MeasurementService {
         
     }
     
-    public Map<String, List<Measurement>> arrangeByTag(List<Measurement> measurements) {
-        Map<String, List<Measurement>> arranged = new HashMap<>();
+    public List<List<Measurement>> arrangeByTag(List<Measurement> measurements) {
+        Map<String, List<Measurement>> arrangedMap = new HashMap<>();
         for (Measurement measurement : measurements) {
             String tagname = measurement.getTimestamp_tag().substring(11);
-            arranged.putIfAbsent(tagname, new ArrayList<>());
-            arranged.get(tagname).add(measurement);           
+            arrangedMap.putIfAbsent(tagname, new ArrayList<>());
+            arrangedMap.get(tagname).add(measurement);           
+        }
+        List<List<Measurement>> arranged = new ArrayList<>();
+        for (String key : arrangedMap.keySet()) {
+            arranged.add(arrangedMap.get(key));
         }
        return arranged; 
     }

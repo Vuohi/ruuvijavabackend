@@ -45,13 +45,13 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             
             return authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
-                            creds.getUser(), 
+                            creds.getUsername(), 
                             creds.getPassword(), 
                             new ArrayList<>())
             );
             
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException(e); 
         }
     }
     
@@ -62,5 +62,9 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
                 .withExpiresAt(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 .sign(HMAC512(SECRET.getBytes()));
         res.addHeader(HEADER_STRING, TOKEN_PREFIX + token);
+        res.setContentType("application/json");
+        res.setCharacterEncoding("UTF-8");
+        res.getWriter().write("{\"username\":\"" + ((User) auth.getPrincipal()).getUsername() + "\", \"token\":\"" + token + "\"}");
+        res.getWriter().flush();
     }
 }

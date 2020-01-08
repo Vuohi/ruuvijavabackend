@@ -26,6 +26,7 @@ public class UserController {
     
     @PostMapping("/sign-up")
     public void signUp(@RequestBody UserInfo user) {
+        System.out.println("user: " + user);
         
         user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
         user.setInfoTag("userdata");
