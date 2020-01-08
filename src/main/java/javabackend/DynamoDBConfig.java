@@ -32,25 +32,21 @@ public class DynamoDBConfig {
     private String amazonDynamoDBAccessKey;
     @Value("${amazon.dynamodb.secretkey}")
     private String amazonDynamoDBSecretKey;
+    @Value("${spring.profiles.active:}")
+    private String activeProfile;
 
     public AWSCredentialsProvider amazonAWSCredentialsProvider() {
         return new AWSStaticCredentialsProvider(amazonAWSCredentials());
     }
 
     @Bean
-    @Profile("production")
     public AWSCredentials amazonAWSCredentials() {
-        amazonDynamoDBAccessKey = System.getenv("S3_KEY");
-        amazonDynamoDBSecretKey = System.getenv("S3_SECRET");
+        if (this.activeProfile.equals("production")) {
+            return new BasicAWSCredentials(System.getenv("S3_KEY"), System.getenv("S3_SECRET"));
+        }
         return new BasicAWSCredentials(amazonDynamoDBAccessKey, amazonDynamoDBSecretKey);
     }
     
-    @Bean
-    @Profile("development")
-    public AWSCredentials amazonAWSCredentials() {
-        return new BasicAWSCredentials(amazonDynamoDBAccessKey, amazonDynamoDBSecretKey);
-    }
-
     @Primary
     @Bean
     public DynamoDBMapperConfig dynamoDBMapperConfig() {
