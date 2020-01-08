@@ -28,10 +28,10 @@ import org.springframework.context.annotation.Profile;
 @Configuration
 public class DynamoDBConfig {
     
-    @Value("${amazon.dynamodb.accesskey}")
-    private String amazonDynamoDBAccessKey;
-    @Value("${amazon.dynamodb.secretkey}")
-    private String amazonDynamoDBSecretKey;
+//    @Value("${amazon.dynamodb.accesskey}")
+//    private String amazonDynamoDBAccessKey;
+//    @Value("${amazon.dynamodb.secretkey}")
+//    private String amazonDynamoDBSecretKey;
     @Value("${spring.profiles.active:}")
     private String activeProfile;
 
@@ -44,7 +44,8 @@ public class DynamoDBConfig {
         if (this.activeProfile.equals("production")) {
             return new BasicAWSCredentials(System.getenv("S3_KEY"), System.getenv("S3_SECRET"));
         }
-        return new BasicAWSCredentials(amazonDynamoDBAccessKey, amazonDynamoDBSecretKey);
+        //return new BasicAWSCredentials(amazonDynamoDBAccessKey, amazonDynamoDBSecretKey);
+        return null;
     }
     
     @Primary
