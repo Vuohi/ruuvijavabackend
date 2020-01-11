@@ -63,11 +63,8 @@ public class MeasurementService {
             arrangedMap.putIfAbsent(tagname, new ArrayList<>());
             arrangedMap.get(tagname).add(measurement);           
         }
-        List<List<Measurement>> arranged = new ArrayList<>();
-        for (String key : arrangedMap.keySet()) {
-            arranged.add(arrangedMap.get(key));
-        }
-       return arranged; 
+        List<List<Measurement>> arranged = new ArrayList<>(arrangedMap.values());
+        return arranged; 
     }
     
 

@@ -5,15 +5,17 @@
  */
 package javabackend;
 
+
+import com.amazonaws.util.DateUtils;
 import java.time.Instant;
 import java.util.List;
-import java.util.Map;
-import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,8 +42,13 @@ public class Controller {
     }
     
     @PostMapping("/measurements/{user}")
-    public Iterable<Measurement> getTimePeriod(@PathVariable String user, @RequestParam DateTime beginning, @RequestParam DateTime end) {
-        return this.measurementService.getByUserAndTimestamp(user, beginning.toString(), end.toString());
+    public List<List<Measurement>> getTimePeriod(@PathVariable String user, @RequestBody TimePeriod timePeriod) {
+        DateTimeFormatter parser = ISODateTimeFormat.dateHour();
+        String beginning = String.valueOf(parser.parseDateTime(timePeriod.getBeginning()).getMillis());
+        String end = String.valueOf(parser.parseDateTime(timePeriod.getEnd()).getMillis());
+        
+        return this.measurementService.arrangeByTag(this.measurementService.getByUserAndTimestamp(user, beginning, end));
+        
     }
    
 //    @GetMapping("/measurements/{id}")
