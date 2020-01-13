@@ -10,9 +10,7 @@ package javabackend;
  * @author katri
  */
 public class SecurityConstants {
-    
-    public static final String amazonDynamoDBAccessKey = "${spring.profiles.active.contains(\"production\")?System.getenv(\"S3_KEY\"):${amazon.dynamodb.accesskey}}";
-    public static final String amazonDynamoDBSecretKey = "${spring.profiles.active.contains(\"production\")?System.getenv(\"S3_SECRET\"):${amazon.dynamodb.secretkey}}";
+       
     public static final String SECRET = "${spring.profiles.active.equals(\"production\")?System.getenv(\"JWT_SECRET\"):${SECRET}}";
     public static final long EXPIRATION_TIME = 864_000_000; // 10 days
     public static final String TOKEN_PREFIX = "Bearer ";
