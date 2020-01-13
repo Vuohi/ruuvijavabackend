@@ -14,7 +14,8 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClientBuilder;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
-import org.springframework.beans.factory.annotation.Value;
+import static javabackend.SecurityConstants.amazonDynamoDBAccessKey;
+import static javabackend.SecurityConstants.amazonDynamoDBSecretKey;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -26,13 +27,6 @@ import org.springframework.context.annotation.Primary;
  */
 @Configuration
 public class DynamoDBConfig {
-    
-    @Value("${spring.profiles.active:}")
-    private String activeProfile;
-    @Value("${activeProfile.equals(\"production\")?System.getenv(\"S3_KEY\"):${amazon.dynamodb.accesskey}}")
-    private String amazonDynamoDBAccessKey;
-    @Value("${activeProfile.equals(\"production\")?System.getenv(\"S3_SECRET\"):${amazon.dynamodb.secretkey}}")
-    private String amazonDynamoDBSecretKey;
     
 
     public AWSCredentialsProvider amazonAWSCredentialsProvider() {
