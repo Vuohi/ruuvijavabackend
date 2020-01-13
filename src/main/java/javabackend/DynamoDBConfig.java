@@ -27,9 +27,9 @@ import org.springframework.context.annotation.Primary;
 public class DynamoDBConfig {
     
     //@Value("${spring.profiles.active.contains(\"production\")?System.getenv(\"S3_KEY\"):${amazon.dynamodb.accesskey}}")
-    private String amazonDynamoDBAccessKey = "System.getenv(\"S3_KEY\")";
+    private String amazonDynamoDBAccessKey = System.getenv("S3_KEY");
     //@Value("${spring.profiles.active.contains(\"production\")?System.getenv(\"S3_SECRET\"):${amazon.dynamodb.secretkey}}")
-    private String amazonDynamoDBSecretKey = "System.getenv(\"S3_SECRET\")";
+    private String amazonDynamoDBSecretKey = System.getenv("S3_SECRET");
     
 
     public AWSCredentialsProvider amazonAWSCredentialsProvider() {
