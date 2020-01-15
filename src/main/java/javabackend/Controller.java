@@ -43,7 +43,7 @@ public class Controller {
     
     @PostMapping("/measurements/{user}")
     public List<List<Measurement>> getTimePeriod(@PathVariable String user, @RequestBody TimePeriod timePeriod) {
-        DateTimeFormatter parser = ISODateTimeFormat.dateHour();
+        DateTimeFormatter parser = ISODateTimeFormat.dateTimeNoMillis();
         String beginning = String.valueOf(parser.parseDateTime(timePeriod.getBeginning()).getMillis());
         String end = String.valueOf(parser.parseDateTime(timePeriod.getEnd()).getMillis());
         
