@@ -5,6 +5,7 @@
  */
 package javabackend;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import lombok.Data;
 
 /**
@@ -16,6 +17,6 @@ public class GoogleResponse {
     
     private String fulfillmentText;
     
-    private String payload;
+    private JsonNode payload;
     
 }

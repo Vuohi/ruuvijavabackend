@@ -154,7 +154,11 @@ public class MeasurementService {
         }
         GoogleResponse res = new GoogleResponse();
         res.setFulfillmentText(response);
-        res.setPayload("{\"google\": {\"expectUserResponse\":" + needResponse + ",\"richResponse\": {\"items\": [{\"simpleResponse\": \"textToSpeech\": \"" + response + "\",\"displayText\": \"" + response + "\"}}]}}}");
+        try {
+            res.setPayload(mapper.readTree("{\"google\": {\"expectUserResponse\":" + needResponse + ",\"richResponse\": {\"items\": [{\"simpleResponse\": {\"textToSpeech\": \"" + response + "\",\"displayText\": \"" + response + "\"}}]}}}"));
+        } catch (JsonProcessingException ex) {
+            Logger.getLogger(MeasurementService.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return res;
     }
     
