@@ -6,7 +6,6 @@
 package javabackend;
 
 
-import com.amazonaws.util.DateUtils;
 import java.time.Instant;
 import java.util.List;
 import org.joda.time.format.DateTimeFormatter;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -57,15 +57,19 @@ public class Controller {
 //        
 //    }
 //    
-//    @GetMapping("/last")
-//    public Measurement getLatestMeasurement() {
-//        
-//    }
-//    
-//    
-//    @PostMapping("/queryData")
-//    public Measurement getQueryData() {
-//        
-//    }
+    @GetMapping("/last/{user}")
+    public List<Measurement> getLatestMeasurement(@PathVariable String user) {
+        List<Measurement> vastaus = this.measurementService.getLatestMeasurements(user);
+        for (Measurement mittaus : vastaus) {
+            System.out.println(mittaus);
+        }
+        return vastaus;
+    }
+    
+    
+    @PostMapping("/querydata")
+    public GoogleResponse getQueryData(@RequestBody GoogleRequest req) {
+        return this.measurementService.getQueryData(req);
+    }
     
 }

@@ -28,4 +28,7 @@ public class UserInfo {
     @DynamoDBAttribute(attributeName="Data")
     private String password;
     
+    @DynamoDBAttribute(attributeName="NumberOfTags")
+    private int numberOfTags;
+    
 }
