@@ -47,14 +47,15 @@ public class MeasurementService {
     }
     
     public List<Measurement> getByUserAndTimestamp(String user, String beginning, String end) {
+        
         beginning += user.substring(0, 3);
         beginning += "0";
-        
+
         end += user.substring(0, 3);
         end += "9";
-        
+
         DynamoDBMapper mapper = this.getMapper();
-        
+
         Map<String, AttributeValue> eav = new HashMap<>();
         eav.put(":val1", new AttributeValue().withS(user));
         eav.put(":val2", new AttributeValue().withS(beginning));

@@ -11,12 +11,12 @@ import java.util.List;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -33,7 +33,6 @@ public class Controller {
     
        
     @GetMapping("/measurements/{user}")
-    @ResponseBody
     public List<List<Measurement>> getMeasurements(@PathVariable String user) {
         String end = String.valueOf(Instant.now().getEpochSecond());
         String beginning = String.valueOf(Instant.now().getEpochSecond() - 86400);
@@ -42,21 +41,20 @@ public class Controller {
     }
     
     @PostMapping("/measurements/{user}")
-    public List<List<Measurement>> getTimePeriod(@PathVariable String user, @RequestBody TimePeriod timePeriod) {
+    public ResponseEntity<List<List<Measurement>>> getTimePeriod(@PathVariable String user, @RequestBody TimePeriod timePeriod) {
         DateTimeFormatter parser = ISODateTimeFormat.dateTimeNoMillis();
         String beginning = String.valueOf(parser.parseDateTime(timePeriod.getBeginning()).getMillis());
         String end = String.valueOf(parser.parseDateTime(timePeriod.getEnd()).getMillis());
+        if (Long.parseLong(end) - Long.parseLong(beginning) > 1814400000) {
+            System.out.println(Long.parseLong(end));
+            System.out.println(Long.parseLong(beginning));
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         
-        return this.measurementService.arrangeByTag(this.measurementService.getByUserAndTimestamp(user, beginning, end));
+        return new ResponseEntity<>(this.measurementService.arrangeByTag(this.measurementService.getByUserAndTimestamp(user, beginning, end)), HttpStatus.OK);
         
     }
    
-//    @GetMapping("/measurements/{id}")
-//    public List<Measurement> getMeasurementsByTag(@PathVariable Long id) {
-//        
-//        
-//    }
-//    
     @GetMapping("/last/{user}")
     public List<Measurement> getLatestMeasurement(@PathVariable String user) {
         List<Measurement> vastaus = this.measurementService.getLatestMeasurements(user);

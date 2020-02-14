@@ -6,6 +6,8 @@
 package javabackend;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,14 +27,17 @@ public class UserController {
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     
     @PostMapping("/sign-up")
-    public void signUp(@RequestBody UserInfo user) {
-        System.out.println("user: " + user);
-        
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        user.setInfoTag("userdata");
-        
-        this.userInfoService.save(user);
-        
+    public ResponseEntity<String> signUp(@RequestBody UserInfo user) {       
+        if (this.userInfoService.getByUser(user.getUsername()) == null) {
+            user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+            user.setInfoTag("userdata");
+            this.userInfoService.save(user);
+
+            return new ResponseEntity<>(user.getUsername(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(user.getUsername(), HttpStatus.BAD_REQUEST);
+        }
+
     }
     
     

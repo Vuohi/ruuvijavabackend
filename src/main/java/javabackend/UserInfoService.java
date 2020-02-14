@@ -43,6 +43,10 @@ public class UserInfoService {
         
         List<UserInfo> response = mapper.query(UserInfo.class, queryExpression);
         
+        if (response.isEmpty()) {
+            return null;
+        }
+        
         return response.get(0);
     }
     
