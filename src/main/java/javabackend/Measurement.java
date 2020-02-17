@@ -28,4 +28,6 @@ public class Measurement {
     @DynamoDBAttribute(attributeName="Data")
     private String data;
     
+    @DynamoDBAttribute(attributeName="MeasurementDate")
+    private String dateOfMeasurement;
 }

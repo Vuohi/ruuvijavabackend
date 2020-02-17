@@ -54,14 +54,15 @@ public class Controller {
         return new ResponseEntity<>(this.measurementService.arrangeByTag(this.measurementService.getByUserAndTimestamp(user, beginning, end)), HttpStatus.OK);
         
     }
-   
+    
+    @PostMapping("/measurements/{user}/add")
+    public void addMeasurement(@RequestBody Measurement measurement) {
+        this.measurementService.save(measurement);
+    }
+    
     @GetMapping("/last/{user}")
     public List<Measurement> getLatestMeasurement(@PathVariable String user) {
-        List<Measurement> vastaus = this.measurementService.getLatestMeasurements(user);
-        for (Measurement mittaus : vastaus) {
-            System.out.println(mittaus);
-        }
-        return vastaus;
+        return this.measurementService.getLatestMeasurements(user);
     }
     
     

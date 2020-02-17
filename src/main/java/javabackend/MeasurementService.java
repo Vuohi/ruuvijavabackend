@@ -99,8 +99,12 @@ public class MeasurementService {
         queryExpression.setLimit(tags);
         List<Measurement> response = mapper.queryPage(Measurement.class, queryExpression).getResults();
         
-        return response;
-                
+        return response;        
+    }
+    
+    public void save(Measurement measurement) {
+        DynamoDBMapper mapper = this.getMapper();
+        mapper.save(measurement);
         
     }
     
