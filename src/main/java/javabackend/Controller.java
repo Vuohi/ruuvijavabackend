@@ -56,8 +56,10 @@ public class Controller {
     }
     
     @PostMapping("/measurements/{user}/add")
-    public void addMeasurement(@RequestBody Measurement measurement) {
-        this.measurementService.save(measurement);
+    public void addMeasurement(@RequestBody List<Measurement> measurements) {
+        for (Measurement measurement : measurements) {
+            this.measurementService.save(measurement);
+        }
     }
     
     @GetMapping("/last/{user}")
