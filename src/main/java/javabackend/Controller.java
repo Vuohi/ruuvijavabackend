@@ -62,7 +62,7 @@ public class Controller {
         }
     }
     
-    @GetMapping("/last/{user}")
+    @GetMapping("/measurements/{user}/latest")
     public List<Measurement> getLatestMeasurement(@PathVariable String user) {
         return this.measurementService.getLatestMeasurements(user);
     }
