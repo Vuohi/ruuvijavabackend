@@ -8,8 +8,11 @@ package javabackend;
 
 import java.time.Instant;
 import java.util.List;
+import org.joda.time.DateTime;
+import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.joda.time.format.ISODateTimeFormat;
+import static org.joda.time.format.ISODateTimeFormat.date;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -41,7 +44,7 @@ public class Controller {
     }
     
     @PostMapping("/measurements/{user}")
-    public ResponseEntity<List<List<Measurement>>> getTimePeriod(@PathVariable String user, @RequestBody TimePeriod timePeriod) {
+    public ResponseEntity<List<List<Measurement>>> getMeasurementsByTimePeriod(@PathVariable String user, @RequestBody TimePeriod timePeriod) {
         DateTimeFormatter parser = ISODateTimeFormat.dateTimeNoMillis();
         String beginning = String.valueOf(parser.parseDateTime(timePeriod.getBeginning()).getMillis());
         String end = String.valueOf(parser.parseDateTime(timePeriod.getEnd()).getMillis());
@@ -71,6 +74,28 @@ public class Controller {
     @PostMapping("/querydata")
     public GoogleResponse getQueryData(@RequestBody GoogleRequest req) {
         return this.measurementService.getQueryData(req);
+    }
+    
+    @GetMapping("/measurements/{user}/averages")
+    public List<Average> getAverages(@PathVariable String user) {
+        DateTime today = new DateTime();
+        DateTime twoWeeksAgo = today.minusDays(14);
+        DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd");
+        
+        TimePeriod timeperiod = new TimePeriod();
+        timeperiod.setEnd(formatter.print(today));
+        timeperiod.setBeginning(formatter.print(twoWeeksAgo));
+        return this.measurementService.getAverages(user, timeperiod);
+        
+    }
+    
+    @PostMapping("/measurements/{user}/averages")
+    public List<Average> getAveragesByTimeperiod(@PathVariable String user, @RequestBody TimePeriod timeperiod) {
+        timeperiod.setBeginning(timeperiod.getBeginning().substring(0, 10));
+        System.out.println(timeperiod.getBeginning());
+        timeperiod.setEnd(timeperiod.getEnd().substring(0, 10));
+        System.out.println(timeperiod.getEnd());
+        return this.measurementService.getAverages(user, timeperiod);
     }
     
 }
