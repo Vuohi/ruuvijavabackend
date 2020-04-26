@@ -11,11 +11,11 @@ Also provide:
 - PORT
 
 Compile the code with maven:
-
-mvn packaged
-
+```
+mvn package
+```
 Run the service:
-
+```
 java -jar target/javabackend-1.0-SNAPSHOT.jar
-
+```
 Use the provided Dockerfile to run the service in container. 
