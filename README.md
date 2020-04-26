@@ -4,7 +4,7 @@ This is a backend for a service wich fetches data from Amazon DynamoDB and provi
 
 AWS DynamoDB requires the following ENV variables:
 - S3_KEY
-- S3_KEY
+- S3_SECRET
 
 Also provide:
 - JWT_SECRET
