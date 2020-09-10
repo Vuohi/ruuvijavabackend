@@ -156,8 +156,9 @@ public class MeasurementService {
         ObjectMapper mapper = new ObjectMapper();
         Map<String, String> equivalences = new HashMap<>();
         
-        String bucketName = "ruuvitag-ids";
-        String key = "taglist-extra.json";       
+        String username = "squi";
+        String bucketName = "ruuvibucket-" + username;
+        String key = "taglist-" + username + ".json";     
         AmazonS3 S3Client = this.config.amazonS3();
         
         try {
