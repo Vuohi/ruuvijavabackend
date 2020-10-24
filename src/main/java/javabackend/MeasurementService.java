@@ -175,17 +175,13 @@ public class MeasurementService {
         
         
         
-        for (Measurement measurement : latest) {
-            try {
-                JsonNode measurementData = mapper.readTree(measurement.getData());
+        for (Measurement measurement : latest) {           
+                JsonNode measurementData = mapper.convertValue(measurement.getData(), JsonNode.class);            
                 String finnishName = equivalences.get(req.getRoom());
-                if (finnishName.equals(measurementData.get("friendlyname").textValue())) {
+                if (finnishName.equals(measurementData.get("FriendlyName").asText())) {
                     needResponse = "false";
                     response = req.getRoom() + " " + req.getValue() + " is " + measurementData.get(req.getValue());                  
                 }
-            } catch (JsonProcessingException ex) {
-                Logger.getLogger(MeasurementService.class.getName()).log(Level.SEVERE, null, ex);
-            }           
         }
         GoogleResponse res = new GoogleResponse();
         res.setFulfillmentText(response);

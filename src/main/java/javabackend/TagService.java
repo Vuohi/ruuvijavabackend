@@ -88,7 +88,7 @@ public class TagService {
             tagData = StreamUtils.copyToString(S3Client.getObject(bucketName, key).getObjectContent(), StandardCharsets.UTF_8);
         }            
         catch (IOException ex) {
-            Logger.getLogger(MeasurementService.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(TagService.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         return tagData;
