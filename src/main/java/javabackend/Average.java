@@ -9,6 +9,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverted;
 import lombok.Data;
 
 /**
@@ -25,7 +26,8 @@ public class Average {
     @DynamoDBRangeKey(attributeName="Timestamp_Tagname")
     private String date_tag;
     
+    @DynamoDBTypeConverted(converter = AverageDataConverter.class)
     @DynamoDBAttribute(attributeName="Data")
-    private String data;
+    private AverageData data;
     
 }

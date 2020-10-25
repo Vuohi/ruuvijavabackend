@@ -12,16 +12,13 @@ import lombok.Data;
  * @author katri
  */
 @Data
-public class MeasurementData {
+public class AverageData {
+    
+    private String friendlyname;
     
     private Double temperature;
     
     private Double humidity;
     
-    private int pressure;
-    
     private String timestamp;
-    
-    private String friendlyname;
-    
 }

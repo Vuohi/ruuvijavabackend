@@ -10,10 +10,6 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverted;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.Map;
 import lombok.Data;
 
 /**
@@ -37,11 +33,4 @@ public class Measurement {
     @DynamoDBAttribute(attributeName="MeasurementDate")
     private String dateOfMeasurement;
     
-    @JsonProperty("data")
-    private void unpackNested (Map<String, String> data) {
-        ObjectMapper mapper = new ObjectMapper(); 
-        JsonNode dataOfMeasurement = mapper.convertValue(data, JsonNode.class);
-        MeasurementData measurementData = mapper.convertValue(dataOfMeasurement, MeasurementData.class);
-        this.data = measurementData;
-    }
 }
