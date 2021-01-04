@@ -5,10 +5,11 @@
  */
 package javabackend;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.util.Map;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConverted;
 import lombok.Data;
 
 /**
@@ -16,30 +17,20 @@ import lombok.Data;
  * @author katri
  */
 @Data
+@DynamoDBTable(tableName = "RuuviMeasurements")
 public class Tag {
     
-    private String name;
+    @DynamoDBHashKey(attributeName="Person")
+    public String username;
     
-    private String mac;
+    @DynamoDBRangeKey(attributeName="Timestamp_Tagname")
+    public String tagID;
     
-    private String friendlyname;
+    @DynamoDBAttribute(attributeName="TagData")
+    @DynamoDBTypeConverted(converter = TagDataConverter.class)
+    public TagData data;
     
-    private String englishname;
-    
-    private Alert low;
-    
-    private Alert high;
-    
-    @JsonProperty("alerts")
-    private void unpackNested(Map<String,Object> alerts) {
-        ObjectMapper mapper = new ObjectMapper(); 
-        JsonNode lowProperties = mapper.convertValue(alerts.get("low"), JsonNode.class);
-        JsonNode highProperties = mapper.convertValue(alerts.get("high"), JsonNode.class);
-               
-        Alert alert = mapper.convertValue(lowProperties, Alert.class);
-        this.low = alert;
-        alert = mapper.convertValue(highProperties, Alert.class);
-        this.high = alert;
-    }
+    @DynamoDBAttribute(attributeName="MeasurementDate")
+    public String date;
     
 }

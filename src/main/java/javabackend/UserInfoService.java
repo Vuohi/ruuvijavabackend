@@ -7,6 +7,7 @@ package javabackend;
 
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDB;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import java.util.HashMap;
@@ -53,6 +54,12 @@ public class UserInfoService {
     public void save(UserInfo userinfo) {
         DynamoDBMapper mapper = this.getMapper();
         mapper.save(userinfo);
+    }
+    
+    public UserInfo updateUser(UserInfo userInfo) {
+        DynamoDBMapper mapper = this.getMapper();
+        mapper.save(userInfo, DynamoDBMapperConfig.SaveBehavior.UPDATE_SKIP_NULL_ATTRIBUTES.config());
+        return userInfo;
     }
     
 }

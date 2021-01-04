@@ -6,12 +6,12 @@
 package javabackend;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -26,12 +26,18 @@ public class TagController {
     private TagService tagService;
     
     @GetMapping("/tags/{user}")
-    public List<Tag> getTags(@PathVariable String user) throws JsonProcessingException {
+    public List<TagData> getTags(@PathVariable String user) {
         return tagService.getTagsByUsername(user);
     }
     
-    @PostMapping("/tags/{user}")
-    public JsonNode addTag(@PathVariable String user, @RequestBody Tag tag) throws JsonProcessingException {
-        return this.tagService.updateTags(tag, user);
+    @PutMapping("/tags/{user}")
+    public TagData updateTag(@PathVariable String user, @RequestBody TagData tagData) {
+        return this.tagService.updateTagData(tagData, user);
     }
+    
+    @PostMapping("/tags/{user}")
+    public TagData addTag(@PathVariable String user, @RequestBody TagData tagData) {
+        return this.tagService.addTag(tagData, user);
+    }
+    
 }

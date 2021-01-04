@@ -14,7 +14,9 @@ import lombok.Data;
 @Data
 public class Alert {
     
-    private boolean status;
+    private boolean activated;
+    
+    private boolean triggered;
     
     private int value;
 }
