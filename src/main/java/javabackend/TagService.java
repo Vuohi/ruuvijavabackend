@@ -45,61 +45,7 @@ public class TagService {
         System.out.println(tags);
         return tags;
     }
-    
-//    public JsonNode updateTags(TagData tag, String username) throws JsonProcessingException {
-//        String tagData = this.getBucketContent(username);
-//        List<TagData> tags = new ArrayList<>();
-//        ObjectMapper mapper = new ObjectMapper();
-//        JsonNode tagJson = mapper.readTree(tagData);
-//        System.out.println(tagJson);
-//        Iterator<JsonNode> iterator = tagJson.get("tags").iterator();
-//        while (iterator.hasNext()) {
-//            JsonNode jsonNode = iterator.next();
-//            TagData currentTag = mapper.convertValue(jsonNode, TagData.class);
-//            if (tag.getMac().equals(currentTag.getMac())) {
-//                currentTag = tag;
-//            }
-//            tags.add(currentTag);
-//        }
-//        
-//        JsonNode updatedTags = mapper.convertValue(tags, JsonNode.class);
-//        System.out.println(updatedTags);
-//        ObjectNode mutible = (ObjectNode)tagJson;
-//        mutible.put("tags", updatedTags);
-//        tagJson = (JsonNode)mutible;
-//        System.out.println(tagJson);
-//        tagData = mapper.writeValueAsString(tagJson);
-//        System.out.println(tagData);
-//        this.setBucketContent(tagData, username);
-//        return tagJson;
-//        
-//    }
-    
-//    public String getBucketContent(String username) {
-//        String bucketName = "ruuvibucket-" + username;
-//        String key = "taglist-" + username + ".json";       
-//        AmazonS3 S3Client = this.config.amazonS3();
-//        
-//        String tagData = "";
-//               
-//        try {
-//            tagData = StreamUtils.copyToString(S3Client.getObject(bucketName, key).getObjectContent(), StandardCharsets.UTF_8);
-//        }            
-//        catch (IOException ex) {
-//            Logger.getLogger(TagService.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        
-//        return tagData;
-//    }
-//    
-//    public void setBucketContent(String tagData, String username) {
-//        String bucketName = "ruuvibucket-" + username;
-//        String key = "taglist-" + username + ".json";       
-//        AmazonS3 S3Client = this.config.amazonS3();
-//        
-//        S3Client.putObject(bucketName, key, tagData);
-//    }
-    
+      
     public List<Tag> fetchTagsFromDynamo(String username) {
         String beg = username.substring(0, 3) + "1";
         String end = username.substring(0, 3) + "9";
